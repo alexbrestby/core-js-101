@@ -19,8 +19,8 @@
  *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
-function parseDataFromRfc2822(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromRfc2822(value) {
+  return new Date(value);
 }
 
 /**
@@ -34,8 +34,8 @@ function parseDataFromRfc2822(/* value */) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  return new Date(value);
 }
 
 
@@ -53,8 +53,8 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  return new Date(new Date(date).getFullYear(), 1, 29).getDate() === 29;
 }
 
 
@@ -73,8 +73,22 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  let hours = Math.trunc(((endDate - startDate) / 3600000) % 100);
+  let min = Math.trunc(((endDate - startDate) / 60000) % 60);
+  let sec = Math.trunc(((endDate - startDate) / 1000) % 60);
+  let msec = Math.trunc((endDate - startDate) % 1000);
+
+  function transform(param, pad) {
+    return param.toString().padStart(pad, '0');
+  }
+
+  hours = transform(hours, 2);
+  min = transform(min, 2);
+  sec = transform(sec, 2);
+  msec = transform(msec, 3);
+
+  return (`${hours}:${min}:${sec}.${msec}`);
 }
 
 
